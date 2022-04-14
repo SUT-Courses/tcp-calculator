@@ -8,10 +8,14 @@ check_command(num_args=2, correct_command="'python client.py <port>'")
 
 # server information
 host, port = "127.0.0.1", sys.argv[1]
-
 socket_client = socket(AF_INET, SOCK_STREAM)
 socket_client.connect((host, int(port)))
-
 while True:
-    commnad = input_(False)
+    command = input(f" {len(get_timestr_mil_sec())*' '}" + "> ")
+    socket_client.send(command.encode())
+    log = socket_client.recv(1024).decode()
+    if log != "ghost":
+        logger(log)
+    if log == "exit done":
+        break
     
