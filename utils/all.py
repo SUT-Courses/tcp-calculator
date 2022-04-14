@@ -1,6 +1,8 @@
 from datetime import datetime
 import sys
 
+
+
 def logger(msg: str):
     # print time and message
     print(f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]}] {msg}')
@@ -8,6 +10,13 @@ def logger(msg: str):
 def error_message(msg: str):
     # print error message
     logger(msg=f"🔥{msg}🔥")
+
+def is_Z_number(msg):
+    if msg.isdigit():
+        return True
+    if msg and msg[0] == '-' and msg[1:].isdigit():
+        return True
+    return False
     
 def get_timestr_mil_sec() -> str:
     # get milliseconds from datetime 
