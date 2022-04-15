@@ -23,16 +23,18 @@ def trans_state(command=""):
     global equation, output
     current_state_name = sg.current_state["state_name"]
     if command == "help":
+        # send to client current_state and options of input
         out(f"Your state is {current_state_name} and you can input the following ... {sg.current_state['inputs']}")
     elif current_state_name == "error":
+        # handle errors here
         equation = ""
         _set_state_id("begin")
     elif current_state_name == "begin":
+        # init state
         if command == "exit":
             _set_state_id("exit")
         elif command == "start":
-            _set_state_id("<number_1>")
-            out("OK")
+            start_actions()
         elif command == "clear":
             refresh_state()
         else: 
@@ -41,6 +43,7 @@ def trans_state(command=""):
     elif current_state_name == "<number_1>":
         if command == "exit":
             _set_state_id("exit")
+        # number1 sent from client
         elif is_Z_number(command):
             equation += command
             out("ghost")
@@ -59,6 +62,7 @@ def trans_state(command=""):
     elif current_state_name == "<number_2>":
         if command == "exit":
             _set_state_id("exit")
+        # number2 sent from client
         elif is_Z_number(command):
             equation += ' ' + command
             out("ghost")
@@ -73,6 +77,7 @@ def trans_state(command=""):
             _set_state_id("exit")
         elif command == "clear":
             refresh_state()
+        # operator sent from client
         elif command in ["+", "-", "*", "/"]:
             equation = equation.replace(" ", command)
             _set_state_id("result")
@@ -82,6 +87,7 @@ def trans_state(command=""):
         
     elif current_state_name == "result":
         try:
+            # calculation is here
             output = eval(equation)
             out(str(output))
             equation = ""
@@ -94,13 +100,20 @@ def trans_state(command=""):
     else:
         raise ValueError(f"State {current_state_name} not found") 
 
+# start actions
+def start_actions():
+    _set_state_id("<number_1>")
+    out("OK")
+
+# clear command actions
 def refresh_state():
     _set_state_id("begin")
     out("cleared")
 
+# send error message to client
 def not_valid_input_error():
     out(f"Not valid input", error = True)
     _set_state_id("error") 
        
-
+# init state
 _set_state_id("begin")
