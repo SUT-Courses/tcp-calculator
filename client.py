@@ -11,7 +11,9 @@ host, port = "127.0.0.1", sys.argv[1]
 socket_client = socket(AF_INET, SOCK_STREAM)
 socket_client.connect((host, int(port)))
 while True:
-    command = input(f" {len(get_timestr_mil_sec())*' '}" + "> ")
+    command = input(f"\t\t\t " + "> ")
+    if not command.strip():
+        continue
     socket_client.send(command.encode())
     log = socket_client.recv(1024).decode()
     if log != "ghost":
