@@ -2,6 +2,7 @@ from utils.all import error_message, logger
 
 conn = None
 
+# possible states
 states = {
     -1: {"state_name": "error", "candidate_next": ["begin"], "need_input": False},
     0: {"state_name": "begin", "candidate_next": ["error", "<number_1>", "exit", "help"], "need_input": True, "inputs": ["start", "clear", "exit", "help"]},
@@ -15,6 +16,7 @@ states = {
 
 current_state:dict = None
 
+# send back to the client
 def out(msg: str, error=False):
     conn.send(f"{msg}".encode())
     if error:
@@ -22,6 +24,17 @@ def out(msg: str, error=False):
     else:
         logger(" RESPONSE | " + msg)
         
+# end connection
 def close_connection():
     conn.close()
     logger(" PRIVATE | server connection closed")
+    
+# check if exit is successful 
+def break_condition():
+    if current_state["state_name"] == "exit":
+        return True
+    return False
+
+# check if trans-state could work without input
+def loop_condition():
+    return not current_state["need_input"] 

@@ -101,14 +101,6 @@ def trans_state(command=""):
             _set_state_id("error")
     else:
         raise ValueError(f"State {current_state_name} not found")  
-    
-def break_condition():
-    if sg.current_state["state_name"] == "exit":
-        return True
-    return False
-    
-
-def loop_condition():
-    return not sg.current_state["need_input"]    
+       
 
 _set_state_id("begin")
