@@ -11,6 +11,7 @@ def error_message(msg: str):
     # print error message
     logger(msg=f"{msg}🔥🔥🔥")
 
+# is among negative numbers zero positive numbers all natural numbers
 def is_Z_number(msg):
     if msg.isdigit():
         return True
@@ -21,7 +22,8 @@ def is_Z_number(msg):
 def get_timestr_mil_sec() -> str:
     # get milliseconds from datetime 
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-    
+
+# if input is/is not a valid command
 def check_command(num_args, correct_command, exit_code=1):
     if len(sys.argv) != num_args:
         logger(msg=f"🔥Not acceptable🔥 use {correct_command}")

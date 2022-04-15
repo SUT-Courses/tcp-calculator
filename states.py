@@ -1,6 +1,6 @@
 from socket import socket, AF_INET, SOCK_STREAM
 
-from utils.all import logger, get_timestr_mil_sec, input_, check_command, error_message, is_Z_number
+from utils.all import logger, is_Z_number
 from server_globals import out, close_connection, states
 import server_globals as sg
 
@@ -34,11 +34,9 @@ def trans_state(command=""):
             _set_state_id("<number_1>")
             out("OK")
         elif command == "clear":
-            _set_state_id("begin")
-            out("cleared")
+            refresh_state()
         else: 
-            out(f"Not valid input", error = True)
-            _set_state_id("error")
+            not_valid_input_error()
     
     elif current_state_name == "<number_1>":
         if command == "exit":
@@ -48,11 +46,9 @@ def trans_state(command=""):
             out("ghost")
             _set_state_id("<number_2>")
         elif command == "clear":
-            _set_state_id("begin")
-            out("cleared")
+            refresh_state()
         else:
-            out(f"Not valid input", error=True)
-            _set_state_id("error")
+            not_valid_input_error()
             
     elif current_state_name == "exit":
         out("exit done")
@@ -68,25 +64,21 @@ def trans_state(command=""):
             out("ghost")
             _set_state_id("<operator>")
         elif command == "clear":
-            _set_state_id("begin")
-            out("cleared")
+            refresh_state()
         else:
-            out(f"Not valid input", error=True)
-            _set_state_id("error")
+            not_valid_input_error()
             
     elif current_state_name == "<operator>":
         if command == "exit":
             _set_state_id("exit")
         elif command == "clear":
-            _set_state_id("begin")
-            out("cleared")
+            refresh_state()
         elif command in ["+", "-", "*", "/"]:
             equation = equation.replace(" ", command)
             _set_state_id("result")
 
         else: 
-            out(f"Not valid input", error=True)
-            _set_state_id("error")
+            not_valid_input_error()
         
     elif current_state_name == "result":
         try:
@@ -100,7 +92,15 @@ def trans_state(command=""):
             out(f"{e}", error=True)
             _set_state_id("error")
     else:
-        raise ValueError(f"State {current_state_name} not found")  
+        raise ValueError(f"State {current_state_name} not found") 
+
+def refresh_state():
+    _set_state_id("begin")
+    out("cleared")
+
+def not_valid_input_error():
+    out(f"Not valid input", error = True)
+    _set_state_id("error") 
        
 
 _set_state_id("begin")
