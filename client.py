@@ -1,3 +1,6 @@
+# sajad faghfoor maghrebi
+# 97106187
+
 import sys
 import time
 from socket import AF_INET, socket, SOCK_STREAM, timeout

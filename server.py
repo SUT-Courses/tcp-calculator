@@ -1,3 +1,6 @@
+# sajad faghfoor maghrebi
+# 97106187
+
 from os import stat
 import re
 import sys
